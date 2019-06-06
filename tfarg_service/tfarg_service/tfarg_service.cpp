@@ -24,6 +24,8 @@ using namespace web;
 using namespace web::http;
 using namespace web::http::experimental::listener;
 
+#define SERVICE_URL L"http://localhost:5002/v1/tfg/"
+
 #define TRACE(msg)            wcout << msg
 #define TRACE_ACTION(a, k, v) wcout << a << L" (" << k << L", " << v << L")\n"
 #define PORT_NUM 4
@@ -31,8 +33,6 @@ using namespace web::http::experimental::listener;
 
 ROBOTIQ3finger_function myROBOTIQ3finger_function(PORT);
 bool _3finger_enabled = false;
-
-map<utility::string_t, utility::string_t> dictionary;
 
 void waitUntilFinishConfiguring() {
 	int GACT, GMOD, GGTO, GIMC, GSTA;
@@ -270,8 +270,10 @@ int main()
 {
 	std::cout << "Hello World! \nThis is server.";
 
-	utility::string_t url = L"http://localhost:5000/v1";
-	http_listener listener(url);
+	/**================================================== *
+	 * ==========  Service  ========== *
+	 * ================================================== */
+	http_listener listener(SERVICE_URL);
 
 	listener.support(methods::GET, handle_get);
 	listener.support(methods::POST, handle_post);
